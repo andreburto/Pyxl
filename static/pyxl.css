@@ -1,0 +1,17 @@
+body {
+    background-color: #000000;
+    border: 0px none;
+    margin: 0px;
+    padding: 0px;
+}
+
+div {
+    background-color: #000000;
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+}
+
+div#content {
+    z-index: 10;
+}
