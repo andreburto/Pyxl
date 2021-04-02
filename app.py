@@ -10,7 +10,7 @@ CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
 PICS_PATH = f"{CURRENT_PATH}/pics"
 DISPLAY_FILE = "display.json"
 PYXL_FILE = "pyxl.html"
-DEFAULT_PIC = "red.json"
+DEFAULT_PIC = "smile.json"
 
 # The main Flask app
 app = Flask(__name__, static_url_path="", static_folder="static", template_folder="templates")
