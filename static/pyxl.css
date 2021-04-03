@@ -15,3 +15,7 @@ div {
 div#content {
     z-index: 10;
 }
+
+p {
+    color: #ffffff;
+}

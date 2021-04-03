@@ -1,5 +1,6 @@
 const contentName = "content"
 const canvasName = "theCanvas"
+const defaultIntervalTime = 10000
 
 const getPixelSize = (canvas, count, gap) => {
     let totalGap = (count * gap) + gap
@@ -11,7 +12,6 @@ const drawPixels = (display, pixelCount, pixelGap) => {
     let c = document.getElementById(canvasName)
     let ctx = c.getContext("2d");
     let pixelSize = getPixelSize(c, pixelCount, pixelGap)
-
     let yPos = pixelGap
 
     for(let cy = 0; cy < pixelCount; cy++) {
@@ -79,5 +79,6 @@ const resizeAll = () => {
 }
 
 const startUp = () => {
+    setInterval(loadImage, defaultIntervalTime)
     resizeAll()
 }
