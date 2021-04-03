@@ -2,6 +2,19 @@ const contentName = "content"
 const canvasName = "theCanvas"
 const defaultIntervalTime = 10000
 
+const setImage = (image) => {
+    let xhr = new XMLHttpRequest();
+    xhr.onload = () => {
+        if (xhr.status != 200) {
+            console.log("Error code: " + xhr.status)
+        }
+    };
+
+    xhr.responseType = "json"
+    xhr.open("PUT", "/image/"+image, true)
+    xhr.send();
+}
+
 const getPixelSize = (canvas, count, gap) => {
     let totalGap = (count * gap) + gap
     let pixelSize = Math.floor((canvas.height - totalGap) / count)
