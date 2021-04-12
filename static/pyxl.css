@@ -17,5 +17,7 @@ div#content {
 }
 
 p {
-    color: #ffffff;
+    color: #000000;
 }
+
+button.grid { height: 50px; width: 50px; background-color: #000000; }

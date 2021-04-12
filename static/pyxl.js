@@ -1,7 +1,3 @@
-const contentName = "content"
-const canvasName = "theCanvas"
-const defaultIntervalTime = 10000
-
 const setImage = (image) => {
     let xhr = new XMLHttpRequest();
     xhr.onload = () => {
@@ -64,26 +60,6 @@ const setCanvasSize = () => {
     c.height = c.parentElement.offsetHeight
 }
 
-const setDivSize = () => {
-    let html = document.documentElement;
-    let divSize = Math.min(html.clientWidth, html.clientHeight)
-    let div = document.getElementById(contentName)
-    div.style.width = divSize + "px"
-    div.style.height = divSize + "px"
-}
-
-const centerDisplayDiv = () => {
-    let html = document.documentElement;
-    let div = document.getElementById(contentName)
-    // Calculate horizontal spacing.
-    let divX = Math.floor((html.clientWidth - div.offsetWidth) / 2)
-    // Calculate vertical spacing.
-    let divY = Math.floor((html.clientHeight - div.offsetHeight) / 2)
-    // Assign positions to the two div elements.
-    div.style.left = divX + "px"
-    div.style.top = divY + "px"
-}
-
 const resizeAll = () => {
     setDivSize()
     centerDisplayDiv()
@@ -91,7 +67,17 @@ const resizeAll = () => {
     loadImage()
 }
 
+const makeCanvas = () => {
+    let c = document.createElement("canvas")
+    c.setAttribute("id", canvasName)
+    let d = document.getElementById(contentName)
+    d.appendChild(c)
+
+}
+
 const startUp = () => {
+    makeDivContent()
+    makeCanvas()
     setInterval(loadImage, defaultIntervalTime)
     resizeAll()
 }

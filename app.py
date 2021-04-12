@@ -26,9 +26,12 @@ pic_state = PicState()
 
 @app.route("/", methods=["GET"])
 def index():
-    with open(f"{app.static_folder}/{PYXL_FILE}", "r") as fp:
-        response = fp.readlines()
-        return str(response)
+    return render_template("pyxl.html", title="Pyxl", javascript_file="pyxl.js")
+
+
+@app.route("/editor", methods=["GET"])
+def get_editor():
+    return render_template("pyxl.html", title="Pyxl - Editor", javascript_file="editor.js")
 
 
 @app.route("/image", methods=["GET"])
