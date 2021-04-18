@@ -20,4 +20,9 @@ p {
     color: #000000;
 }
 
+div.icc {
+    background-color: #ffffff;
+    position: relative;
+}
+
 button.grid { height: 50px; width: 50px; background-color: #000000; }

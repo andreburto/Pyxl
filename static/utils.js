@@ -1,6 +1,25 @@
 const contentName = "content"
 const canvasName = "theCanvas"
 const defaultIntervalTime = 10000
+const defaultGap = 2
+const imageDescription = "imageDescription"
+const imageGap = "imageGap"
+const imageName = "imageName"
+const colCount = 8;
+const rowCount = 8;
+const colorGrid = []
+const colorList = [
+    "#000000",
+    "#ff0000",
+    "#ffaa00",
+    "#ffff00",
+    "#0000ff",
+    "#00ffff",
+    "#00ff00",
+    "#cc00cc",
+    "#660099",
+    "#ffffff"
+]
 
 const makeDivContent = () => {
     let dc = document.createElement("div")
@@ -27,4 +46,9 @@ const centerDisplayDiv = () => {
     // Assign positions to the two div elements.
     div.style.left = divX + "px"
     div.style.top = divY + "px"
+}
+
+const setBackgroundColor = (bgcolor) => {
+    let b = document.getElementsByTagName("body")[0]
+    b.style.backgroundColor = bgcolor
 }

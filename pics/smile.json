@@ -1,6 +1,5 @@
 {
     "count": 8,
-    "gap": 2,
     "description": "Default yellow smile",
     "display": [
         ["#000000", "#FFFF00", "#FFFF00", "#FFFF00", "#FFFF00", "#FFFF00", "#FFFF00", "#000000"],
@@ -11,5 +10,7 @@
         ["#FFFF00", "#000000", "#FFFF00", "#FFFF00", "#FFFF00", "#FFFF00", "#000000", "#FFFF00"],
         ["#FFFF00", "#FFFF00", "#000000", "#000000", "#000000", "#000000", "#FFFF00", "#FFFF00"],
         ["#000000", "#FFFF00", "#FFFF00", "#FFFF00", "#FFFF00", "#FFFF00", "#FFFF00", "#000000"]
-    ]
+    ],
+    "file": "smile.json",
+    "gap": 2
 }

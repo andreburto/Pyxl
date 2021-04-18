@@ -1,22 +1,3 @@
-const imageDescription = "imageDescription"
-const imageGap = "imageGap"
-const imageName = "imageName"
-const colCount = 8;
-const rowCount = 8;
-const colorGrid = []
-const colorList = [
-    "#000000",
-    "#ff0000",
-    "#ffaa00",
-    "#ffff00",
-    "#0000ff",
-    "#00ffff",
-    "#00ff00",
-    "#cc00cc",
-    "#660099",
-    "#ffffff"
-]
-
 const setupGrid = (cols, rows) => {
     for (let rc = 0; rc < rows; rc++) {
         colorGrid[rc] = []
@@ -69,9 +50,61 @@ const resetTable = () => {
     }
 }
 
+const readOutTable = () => {
+    let saveOutTable = []
+    for (let rc = 0; rc < rowCount; rc++) {
+        saveOutTable[rc] = []
+        for (let cc = 0; cc < colCount; cc++) {
+            saveOutTable[rc][cc] = colorList[colorGrid[rc][cc]];
+        }
+    }
+    return saveOutTable
+}
+
+const saveImage = (image) => {
+    let xhr = new XMLHttpRequest();
+    xhr.onload = () => {
+        if (xhr.status < 200 && xhr.status >= 300) {
+            console.log("Error code: " + xhr.status)
+        } else {
+            loadImageList()
+        }
+    }
+
+    xhr.responseType = "json"
+    xhr.open("POST", "/image/save", true)
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(image));
+}
+
+const makeFileName = (name) => {
+    let fileName = name.replace(" ", "_")
+    fileName = fileName.replace(/\W/g, "")
+    fileName = fileName + ".json"
+    return fileName
+}
+
 const saveData = () => {
-    valueName = document.getElementById(imageName).innerText
-    console.log(valueName)
+    let valueName = document.getElementById(imageName).value
+    let valueDescription = document.getElementById(imageDescription).value
+    let valueGap = document.getElementById(imageGap).value
+
+    if (valueName == "") {
+        console.log("You must provide a name.")
+        return
+    }
+    if (valueDescription == "") { valueDescription = valueName }
+    if (valueGap == "") { valueGap = defaultGap }
+
+    let image = {
+        "file": makeFileName(valueName),
+        "count": colCount,
+        "gap": valueGap,
+        "description": valueDescription,
+        "display": readOutTable()
+    }
+
+    saveImage(image)
 }
 
 const makeTitle = (title) => {
@@ -99,6 +132,12 @@ const makeButton = (title, func) => {
     return b
 }
 
+const makeHr = () => {
+    let hr = document.createElement("hr")
+    hr.style.border = "1px solid #000000"
+    return hr
+}
+
 const resizeAll = () => {
     setDivSize()
     centerDisplayDiv()
@@ -106,26 +145,32 @@ const resizeAll = () => {
 
 const setupEditor = () => {
     let d = document.getElementById(contentName)
-    let tableTitle = makeTitle("Editor")
-    let controlsTitle = makeTitle("Controls")
     d.style.backgroundColor = "#ffffff"
     d.style.padding = "5px"
+    d.style.marginBottom = "5px"
+
+    d.appendChild(makeImageChoiceControl())
+    d.appendChild(makeHr())
+
     d.appendChild(makeField("Name", imageName))
     d.appendChild(makeField("Description", imageDescription))
     d.appendChild(makeField("Gap", imageGap))
+
+    let tableTitle = makeTitle("Editor")
     tableTitle.appendChild(makeTable(colCount, rowCount))
     d.appendChild(tableTitle)
 
+    let controlsTitle = makeTitle("Controls")
     controlsTitle.appendChild(makeButton("Reset Grid", resetTable))
     controlsTitle.appendChild(makeButton("Save Image", saveData))
     d.appendChild(controlsTitle)
-
-
 }
 
 const startUp = () => {
+    setBackgroundColor("#ffffff")
     makeDivContent()
     setupGrid(colCount, rowCount)
     setupEditor()
+    loadImageList()
     resizeAll()
 }
