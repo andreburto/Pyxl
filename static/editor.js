@@ -94,7 +94,11 @@ const saveData = () => {
         return
     }
     if (valueDescription == "") { valueDescription = valueName }
-    if (valueGap == "") { valueGap = defaultGap }
+    if (valueGap == "") {
+        valueGap = defaultGap
+    } else {
+        valueGap = parseInt(valueGap)
+    }
 
     let image = {
         "file": makeFileName(valueName),

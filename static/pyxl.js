@@ -4,9 +4,16 @@ const getPixelSize = (canvas, count, gap) => {
     return pixelSize
 }
 
+const clearCanvas = () => {
+    let c = document.getElementById(canvasName)
+    let ctx = c.getContext("2d")
+    ctx.fillStyle = "#000000"
+    ctx.fillRect(0, 0, c.width, c.height)
+}
+
 const drawPixels = (display, pixelCount, pixelGap) => {
     let c = document.getElementById(canvasName)
-    let ctx = c.getContext("2d");
+    let ctx = c.getContext("2d")
     let pixelSize = getPixelSize(c, pixelCount, pixelGap)
     let yPos = pixelGap
 
@@ -28,6 +35,7 @@ const loadImage = () => {
 
     xhr.onload = () => {
         if (xhr.status == 200) {
+            clearCanvas()
             let resp = xhr.response
             drawPixels(resp["display"], resp["count"], resp["gap"])
         }
