@@ -74,7 +74,6 @@ const makeImageChoiceControl = () => {
 
     let selectControl = document.createElement("div")
     selectControl.setAttribute("id", iccControlId)
-    selectControl.setAttribute("class", "icc")
 
     selectControl.appendChild(selectDropdown)
     selectControl.appendChild(selectBtn)

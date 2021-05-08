@@ -18,15 +18,26 @@ div#content {
 
 p {
     color: #000000;
-}
-
-div.icc {
-    background-color: #ffffff;
-    position: relative;
+    padding: 0px;
+    margin: 5px;
 }
 
 button.grid {
     height: 25px; width: 25px; background-color: #000000;
+}
+
+div.editorSection {
+    position: static;
+    float: left;
+    margin: 5px;
+    margin-top: 0px;
+    width: 100%;
+}
+
+div.editorFields {
+    float: left;
+    padding: 1px;
+    position: relative;
 }
 
 hr {

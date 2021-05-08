@@ -1,8 +1,9 @@
 const buttonClicked = (id) => {
+    console.log("id: "+id)
     let el = document.getElementById(id)
     let chosenColor = document.getElementById(chosenColorId)
     el.style.backgroundColor = chosenColor.style.backgroundColor
-    el.setAttribute(hexCodeAttr, chosenColor.getAttribute(hexCodeAttr))
+    setAttributes(el, {"hexcode": chosenColor.getAttribute("hexcode")})
 }
 
 const makeTable = (cols, rows) => {
@@ -13,11 +14,9 @@ const makeTable = (cols, rows) => {
         for (let cc = 0; cc < cols; cc++) {
             let tempCell = document.createElement("td")
             let tempButton = document.createElement("button")
-            tempButton.setAttribute("id", "x"+cc+"y"+rc)
-            tempButton.setAttribute("x", cc)
-            tempButton.setAttribute("y", rc)
-            tempButton.setAttribute("class", "grid")
-            tempButton.setAttribute(hexCodeAttr, colorList[0])
+            setAttributes(tempButton, {
+                "id": "x"+cc+"y"+rc, "class": "grid", "hexcode": colorList[0], "x": cc, "y": rc
+            })
             tempButton.style.backgroundColor = colorList[0]
             tempButton.addEventListener("click", () => { buttonClicked("x"+cc+"y"+rc) })
             tempCell.appendChild(tempButton)
@@ -32,8 +31,9 @@ const makeTable = (cols, rows) => {
 const resetTable = () => {
     for (let rc = 0; rc < rowCount; rc++) {
         for (let cc = 0; cc < colCount; cc++) {
+            console.log("id: "+"x"+cc+"y"+rc)
             let cell = document.getElementById("x"+cc+"y"+rc)
-            tempButton.setAttribute(hexCodeAttr, colorList[0])
+            cell.setAttribute("hexcode", colorList[0])
             cell.style.backgroundColor = colorList[0]
         }
     }
@@ -45,9 +45,10 @@ const readOutTable = () => {
         saveOutTable[rc] = []
         for (let cc = 0; cc < colCount; cc++) {
             let cell = document.getElementById("x"+cc+"y"+rc)
-            saveOutTable[rc][cc] = cell.getAttribute(hexCodeAttr)
+            saveOutTable[rc][cc] = cell.getAttribute("hexcode")
         }
     }
+    console.log(saveOutTable)
     return saveOutTable
 }
 
@@ -101,22 +102,15 @@ const saveData = () => {
     saveImage(image)
 }
 
-const makeTitle = (title) => {
-    let p = document.createElement("p")
-    let s = document.createElement("span")
-    let b = document.createElement("br")
-    s.innerText = title
-    p.appendChild(s)
-    p.appendChild(b)
-    return p
-}
-
 const makeField = (title, id) => {
+    let d = document.createElement("div")
+    setAttributes(d, {"class": "editorFields"})
     let p = makeTitle(title)
     let i = document.createElement("input")
     i.setAttribute("id", id)
     p.appendChild(i)
-    return p
+    d.appendChild(p)
+    return d
 }
 
 const makeButton = (title, func) => {
@@ -126,15 +120,11 @@ const makeButton = (title, func) => {
     return b
 }
 
-const makeHr = () => {
-    return document.createElement("hr")
-}
-
 const colorSelected = (id) => {
     let colorChoice = document.getElementById(id)
     let colorChosen = document.getElementById(chosenColorId)
     colorChosen.style.backgroundColor = colorChoice.style.backgroundColor
-    colorChosen.setAttribute(hexCodeAttr, colorChoice.getAttribute(hexCodeAttr))
+    setAttributes(colorChosen, {"hexcode": colorChoice.getAttribute("hexcode")})
 }
 
 const drawPalette = (cols) => {
@@ -148,9 +138,9 @@ const drawPalette = (cols) => {
             if (colorIndex < colorList.length) {
                 let tempCell = document.createElement("td")
                 let tempButton = document.createElement("button")
-                tempButton.setAttribute("id", "x"+cc+"y"+rc+"p")
-                tempButton.setAttribute("class", "paletteColor")
-                tempButton.setAttribute(hexCodeAttr, colorList[colorIndex])
+                setAttributes(tempButton, {
+                    "id": "x"+cc+"y"+rc+"p", "hexcode": colorList[colorIndex], "class": "paletteColor"
+                })
                 tempButton.style.backgroundColor = colorList[colorIndex]
                 tempButton.style.padding = "1px"
                 tempButton.addEventListener("click", () => { colorSelected("x"+cc+"y"+rc+"p") })
@@ -163,10 +153,9 @@ const drawPalette = (cols) => {
     }
     let tempRow = document.createElement("tr")
     let tempCell = document.createElement("td")
-    tempCell.setAttribute("colspan", paletteWidth)
+    setAttributes(tempCell, {"colspan": paletteWidth})
     let chosenColorDiv = document.createElement("div")
-    chosenColorDiv.setAttribute("id", chosenColorId)
-    chosenColorDiv.setAttribute("class", "paletteColor")
+    setAttributes(chosenColorDiv, {"id": chosenColorId, "class": "paletteColor"})
     chosenColorDiv.style.backgroundColor = colorList[0]
     chosenColorDiv.style.width = (paletteWidth * 50) + "px"
     tempCell.appendChild(chosenColorDiv)
@@ -176,7 +165,7 @@ const drawPalette = (cols) => {
 
     let paletteDiv = document.createElement("div")
     let paletteTitle = document.createElement("p")
-    paletteDiv.setAttribute("id", paletteId)
+    setAttributes(paletteDiv, {"id": paletteId})
     paletteTitle.style.textAlign = "center"
     paletteTitle.innerText = "Choose color"
     paletteDiv.appendChild(paletteTitle)
@@ -190,31 +179,50 @@ const resizeAll = () => {
     centerDisplayDiv()
 }
 
+const makeEditorSection = () => {
+    let d = document.createElement("div")
+    setAttributes(d, {"class": "editorSection"})
+    return d
+}
+
 const setupEditor = () => {
-    let d = document.getElementById(contentName)
     let body = document.getElementsByTagName("body")[0]
     let paletteWidget = drawPalette(paletteColumns)
+    body.appendChild(paletteWidget)
+
+    let d = document.getElementById(contentName)
     d.style.backgroundColor = "#ffffff"
-    d.style.padding = "5px"
+    d.style.left = "110px"
     d.style.marginBottom = "5px"
+    d.style.padding = "5px"
+    d.style.position = "absolute"
 
-    d.appendChild(makeImageChoiceControl())
-    d.appendChild(makeHr())
+    let fieldDiv = makeEditorSection()
+    fieldDiv.appendChild(makeField("Name", imageName))
+    fieldDiv.appendChild(makeField("Description", imageDescription))
+    fieldDiv.appendChild(makeField("Gap", imageGap))
+    d.appendChild(fieldDiv)
 
-    d.appendChild(makeField("Name", imageName))
-    d.appendChild(makeField("Description", imageDescription))
-    d.appendChild(makeField("Gap", imageGap))
-
+    let gridDiv = makeEditorSection()
     let tableTitle = makeTitle("Editor")
     tableTitle.appendChild(makeTable(colCount, rowCount))
-    d.appendChild(tableTitle)
+    gridDiv.appendChild(tableTitle)
+    d.appendChild(gridDiv)
 
+    let buttonDiv = makeEditorSection()
     let controlsTitle = makeTitle("Controls")
     controlsTitle.appendChild(makeButton("Reset Grid", resetTable))
     controlsTitle.appendChild(makeButton("Save Image", saveData))
-    d.appendChild(controlsTitle)
+    buttonDiv.appendChild(controlsTitle)
+    d.appendChild(buttonDiv)
 
-    body.appendChild(paletteWidget)
+    d.appendChild(makeHr())
+
+    let selectDiv = makeEditorSection()
+    let selectTitle = makeTitle("Choose display...")
+    selectTitle.appendChild(makeImageChoiceControl())
+    selectDiv.appendChild(selectTitle)
+    d.appendChild(selectDiv)
 }
 
 const startUp = () => {

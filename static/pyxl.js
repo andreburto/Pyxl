@@ -64,7 +64,7 @@ const resizeAll = () => {
 
 const makeCanvas = () => {
     let c = document.createElement("canvas")
-    c.setAttribute("id", canvasName)
+    setAttributes(c, {"id": canvasName})
     let d = document.getElementById(contentName)
     d.appendChild(c)
 

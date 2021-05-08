@@ -7,7 +7,6 @@ const imageGap = "imageGap"
 const imageName = "imageName"
 const colCount = 16;
 const rowCount = 16;
-const colorGrid = []
 const colorList = [
     "#000000",
     "#ff0000",
@@ -23,7 +22,6 @@ const colorList = [
 const paletteId = "thePalette"
 const chosenColorId = "chosenColor"
 const paletteColumns = 2
-const hexCodeAttr = "hexCode"
 
 const makeDivContent = () => {
     let dc = document.createElement("div")
@@ -55,4 +53,24 @@ const centerDisplayDiv = () => {
 const setBackgroundColor = (bgcolor) => {
     let b = document.getElementsByTagName("body")[0]
     b.style.backgroundColor = bgcolor
+}
+
+const setAttributes = (el, attributes) => {
+    for (k in attributes) {
+        el.setAttribute(k.toString(), attributes[k])
+    }
+}
+
+const makeTitle = (title) => {
+    let p = document.createElement("p")
+    let s = document.createElement("span")
+    let b = document.createElement("br")
+    s.innerText = title
+    p.appendChild(s)
+    p.appendChild(b)
+    return p
+}
+
+const makeHr = () => {
+    return document.createElement("hr")
 }
