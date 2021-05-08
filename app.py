@@ -45,6 +45,33 @@ def get_image():
         return resp
 
 
+@app.route("/upscale/<int:size>", methods=["GET"])
+def get_upscale(size):
+    pic = pic_state.current_picture
+    file_name = pic if pic.lower().endswith(".json") else f"{pic}.json"
+
+    if (size % 8) > 0:
+        raise ValueError("The new size must be divisible by 8.")
+
+    with open(f"{PICS_PATH}/{file_name}", "r") as fp:
+        file_content = json.load(fp)
+        upscale_size = int(size / int(file_content["count"]))
+        upscale_display = []
+        for row in file_content["display"]:
+            temp_row = []
+            for col in row:
+                for _ in range(0, upscale_size):
+                    temp_row.append(col)
+            for _ in range(0, upscale_size):
+                upscale_display.append(temp_row)
+
+        file_content["count"] = str(size)
+        file_content["display"] = upscale_display
+        resp = make_response(file_content)
+        resp.headers["Content-Type"] = "application/json"
+        return resp
+
+
 @app.route("/image/save", methods=["POST"])
 def save_image():
     request_json = json.loads(request.data)

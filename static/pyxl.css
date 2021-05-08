@@ -6,7 +6,7 @@ body {
 }
 
 div {
-    background-color: #000000;
+    /*background-color: #000000;*/
     margin: 0px;
     padding: 0px;
     position: absolute;
@@ -25,4 +25,45 @@ div.icc {
     position: relative;
 }
 
-button.grid { height: 50px; width: 50px; background-color: #000000; }
+button.grid {
+    height: 25px; width: 25px; background-color: #000000;
+}
+
+hr {
+    border: 1px solid #000000;
+}
+
+/* The palette widget. */
+div#thePalette {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    padding: 0px;
+    border: 0px none;
+    margin: 0px;
+    z-index: 1000;
+}
+
+div#thePalette table, div#thePalette tbody, div#thePalette tr, div#thePalette td {
+    border-collapse: collapse;
+    border: 0px none;
+    padding: 0px;
+    margin: 0px;
+}
+
+div#thePalette td {
+    padding: 1px;
+}
+
+div#thePalette button.paletteColor {
+    border: 1px solid;
+    border-color: #000000;
+    width: 50px;
+    height: 50px;
+}
+
+div#chosenColor {
+    border: 1px solid;
+    border-color: #000000;
+    height: 50px;
+}

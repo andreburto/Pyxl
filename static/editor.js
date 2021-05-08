@@ -1,25 +1,13 @@
-const setupGrid = (cols, rows) => {
-    for (let rc = 0; rc < rows; rc++) {
-        colorGrid[rc] = []
-        for (let cc = 0; cc < cols; cc++) {
-            colorGrid[rc][cc] = 0;
-        }
-    }
-}
-
 const buttonClicked = (id) => {
     let el = document.getElementById(id)
-    let x = el.getAttribute("x")
-    let y = el.getAttribute("y")
-    let colorIndex = colorGrid[y][x] + 1
-    if (colorIndex >= colorList.length) { colorIndex = 0 }
-    colorGrid[y][x] = colorIndex
-    el.style.backgroundColor = colorList[colorIndex]
+    let chosenColor = document.getElementById(chosenColorId)
+    el.style.backgroundColor = chosenColor.style.backgroundColor
+    el.setAttribute(hexCodeAttr, chosenColor.getAttribute(hexCodeAttr))
 }
 
 const makeTable = (cols, rows) => {
-    const elTable = document.createElement("table")
-    const elTableBody = document.createElement("tbody")
+    let elTable = document.createElement("table")
+    let elTableBody = document.createElement("tbody")
     for (let rc = 0; rc < rows; rc++) {
         let tempRow = document.createElement("tr")
         for (let cc = 0; cc < cols; cc++) {
@@ -29,7 +17,8 @@ const makeTable = (cols, rows) => {
             tempButton.setAttribute("x", cc)
             tempButton.setAttribute("y", rc)
             tempButton.setAttribute("class", "grid")
-            tempButton.style.backgroundColor = colorGrid[rc][cc]
+            tempButton.setAttribute(hexCodeAttr, colorList[0])
+            tempButton.style.backgroundColor = colorList[0]
             tempButton.addEventListener("click", () => { buttonClicked("x"+cc+"y"+rc) })
             tempCell.appendChild(tempButton)
             tempRow.appendChild(tempCell)
@@ -44,7 +33,7 @@ const resetTable = () => {
     for (let rc = 0; rc < rowCount; rc++) {
         for (let cc = 0; cc < colCount; cc++) {
             let cell = document.getElementById("x"+cc+"y"+rc)
-            colorGrid[rc][cc] = 0;
+            tempButton.setAttribute(hexCodeAttr, colorList[0])
             cell.style.backgroundColor = colorList[0]
         }
     }
@@ -55,7 +44,8 @@ const readOutTable = () => {
     for (let rc = 0; rc < rowCount; rc++) {
         saveOutTable[rc] = []
         for (let cc = 0; cc < colCount; cc++) {
-            saveOutTable[rc][cc] = colorList[colorGrid[rc][cc]];
+            let cell = document.getElementById("x"+cc+"y"+rc)
+            saveOutTable[rc][cc] = cell.getAttribute(hexCodeAttr)
         }
     }
     return saveOutTable
@@ -137,9 +127,62 @@ const makeButton = (title, func) => {
 }
 
 const makeHr = () => {
-    let hr = document.createElement("hr")
-    hr.style.border = "1px solid #000000"
-    return hr
+    return document.createElement("hr")
+}
+
+const colorSelected = (id) => {
+    let colorChoice = document.getElementById(id)
+    let colorChosen = document.getElementById(chosenColorId)
+    colorChosen.style.backgroundColor = colorChoice.style.backgroundColor
+    colorChosen.setAttribute(hexCodeAttr, colorChoice.getAttribute(hexCodeAttr))
+}
+
+const drawPalette = (cols) => {
+    let paletteWidth = cols == undefined ? 2 : cols;
+    let elTable = document.createElement("table")
+    let elTableBody = document.createElement("tbody")
+    let colorIndex = 0;
+    for (let rc = 0; colorIndex < colorList.length; rc++) {
+        let tempRow = document.createElement("tr")
+        for (let cc = 0; cc < paletteWidth; cc++) {
+            if (colorIndex < colorList.length) {
+                let tempCell = document.createElement("td")
+                let tempButton = document.createElement("button")
+                tempButton.setAttribute("id", "x"+cc+"y"+rc+"p")
+                tempButton.setAttribute("class", "paletteColor")
+                tempButton.setAttribute(hexCodeAttr, colorList[colorIndex])
+                tempButton.style.backgroundColor = colorList[colorIndex]
+                tempButton.style.padding = "1px"
+                tempButton.addEventListener("click", () => { colorSelected("x"+cc+"y"+rc+"p") })
+                tempCell.appendChild(tempButton)
+                tempRow.appendChild(tempCell)
+                colorIndex += 1
+            }
+        }
+        elTableBody.appendChild(tempRow)
+    }
+    let tempRow = document.createElement("tr")
+    let tempCell = document.createElement("td")
+    tempCell.setAttribute("colspan", paletteWidth)
+    let chosenColorDiv = document.createElement("div")
+    chosenColorDiv.setAttribute("id", chosenColorId)
+    chosenColorDiv.setAttribute("class", "paletteColor")
+    chosenColorDiv.style.backgroundColor = colorList[0]
+    chosenColorDiv.style.width = (paletteWidth * 50) + "px"
+    tempCell.appendChild(chosenColorDiv)
+    tempRow.appendChild(tempCell)
+    elTableBody.appendChild(tempRow)
+    elTable.appendChild(elTableBody)
+
+    let paletteDiv = document.createElement("div")
+    let paletteTitle = document.createElement("p")
+    paletteDiv.setAttribute("id", paletteId)
+    paletteTitle.style.textAlign = "center"
+    paletteTitle.innerText = "Choose color"
+    paletteDiv.appendChild(paletteTitle)
+    paletteDiv.appendChild(elTable)
+
+    return paletteDiv
 }
 
 const resizeAll = () => {
@@ -149,6 +192,8 @@ const resizeAll = () => {
 
 const setupEditor = () => {
     let d = document.getElementById(contentName)
+    let body = document.getElementsByTagName("body")[0]
+    let paletteWidget = drawPalette(paletteColumns)
     d.style.backgroundColor = "#ffffff"
     d.style.padding = "5px"
     d.style.marginBottom = "5px"
@@ -168,12 +213,13 @@ const setupEditor = () => {
     controlsTitle.appendChild(makeButton("Reset Grid", resetTable))
     controlsTitle.appendChild(makeButton("Save Image", saveData))
     d.appendChild(controlsTitle)
+
+    body.appendChild(paletteWidget)
 }
 
 const startUp = () => {
     setBackgroundColor("#ffffff")
     makeDivContent()
-    setupGrid(colCount, rowCount)
     setupEditor()
     loadImageList()
     resizeAll()

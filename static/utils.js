@@ -5,8 +5,8 @@ const defaultGap = 2
 const imageDescription = "imageDescription"
 const imageGap = "imageGap"
 const imageName = "imageName"
-const colCount = 8;
-const rowCount = 8;
+const colCount = 16;
+const rowCount = 16;
 const colorGrid = []
 const colorList = [
     "#000000",
@@ -20,6 +20,10 @@ const colorList = [
     "#660099",
     "#ffffff"
 ]
+const paletteId = "thePalette"
+const chosenColorId = "chosenColor"
+const paletteColumns = 2
+const hexCodeAttr = "hexCode"
 
 const makeDivContent = () => {
     let dc = document.createElement("div")
