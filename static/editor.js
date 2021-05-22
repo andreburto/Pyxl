@@ -115,6 +115,7 @@ const makeField = (title, id) => {
 
 const makeButton = (title, func) => {
     let b = document.createElement("button")
+    setAttributes(b, {"class": "editorButton"})
     b.innerText = title
     b.addEventListener("click", func)
     return b

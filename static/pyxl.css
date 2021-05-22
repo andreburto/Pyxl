@@ -26,6 +26,10 @@ button.grid {
     height: 25px; width: 25px; background-color: #000000;
 }
 
+button.editorButton {
+    margin-right: 5px;
+}
+
 div.editorSection {
     position: static;
     float: left;
